@@ -43,20 +43,13 @@ def login():
             return render_template("login.html", error="Usuario no tiene contraseña")
         if usuario["password"] == password:
             session["usuario_id"] = str(usuario["_id"])
-            return redirect("/acercade")
+            return redirect("/login")
         else:
             return render_template("login.html", error="Contraseña incorrecta")
 
     return render_template("login.html")
 
 
-@app.route("/acercade", methods=["GET", "POST"])
-def acercade():
-    if request.method == "POST":
-        titulo = request.form["titulo"]
-        descripcion = request.form["descripcion"]
-        usuario_id = session.get("usuario_id")
-    return render_template("acercade.html")
 
 @app.route('/cerrarsesion')
 def cerrarsesion():
