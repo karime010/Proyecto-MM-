@@ -3,21 +3,14 @@ from pymongo.errors import DuplicateKeyError, ConnectionFailure
 from bson.objectid import ObjectId
 from datetime import datetime, timedelta
 from typing import Optional, List, Dict
-import os
 
-
-def main():
-    print("Hello from practica1!")
-    
-
-
-class GestorTareas:
+class GestorLabiales:
     def __init__(self, uri: str = 'mongodb+srv://karimeDB:cruzsilvaari091217@clusterkarimecruz.eb4k36a.mongodb.net/?appName=ClusterKarimeCruz'):
         try:
             self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000)
             self.cliente.admin.command('ping')
-            self.db = self.cliente['gestor_tareas']
-            self.tareas = self.db['tareas']
+            self.db = self.cliente['gestor_laiales']
+            self.tareas = self.db['labiales']
             self.usuarios = self.db['usuarios']
             
             # Crear índices necesarios
@@ -30,10 +23,57 @@ class GestorTareas:
     def _crear_indices(self):
         """Crear índices para mejorar rendimiento"""
         self.usuarios.create_index("email", unique=True)
-        self.tareas.create_index([("usuario_id", 1), ("fecha_creacion", -1)])
-        self.tareas.create_index("estado")
+        self.tareas.create_index("usuario_id")
+        self.tareas.create_index("color")
+        
+    def agrgar_labial(self, usuario_id: str, nombre: str, color: str, precio: float) -> Optional[str]:
+        """Agregar un nuevo labial para un usuario"""
+        if not self.obtener_usuario(usuario_id):
+            print(f"❌ Error: Usuario {usuario_id} no existe")
+            return None
+        
+        labial = {
+            "usuario_id": ObjectId(usuario_id),
+            "nombre": nombre,
+            "color": color,
+            "precio": precio,
+            "stock": 10,
+            "fecha_registro": datetime.now(),
+            "vendido": False
+        }
+        
+        resultado = self.labiales.insert_one(labial)
+        return str(resultado.inserted_id)
     
-    def crear_usuario(self, nombre: str, email: str, password: str) -> Optional[str]:
+    def obtener_labiales_usuario(self, usuario_id: str) -> list[Dict]:
+        """Obtener labiales por ID"""
+            labiales = self.labiales.find({"_id": ObjectId(usuario_id)})
+            resultado = []
+            for labiales in labiales:
+                labiales['_id'] = str(labiales['_id'])
+                labiales['_id'] = str(labiales['usuario_id'])
+                resultado.append(labiales)
+            return resultado
+        
+        except Exception as e:
+            print(f"Error al obtener labiales: {e}")
+            return None
+        
+        def vender_labial(self, labial_id: str, cantidad: init = 1) -> bool:
+            resultado = self.labiales.update_one(
+            {"_id": ObjectId(labial_id)},
+            {"$inc": {"stock": -cantidad}, "$set": {"vendido": True, "fecha_venta": datetime.now()}}
+        )
+        return resultado.modified_count > 0
+    
+        def marcar_como_vendido(self, labial_id: str) -> bool:
+            resultado = self.labiales.update_one(
+                {"_id": ObjectId(labial_id)},
+                {"$set": {"vendido": True, "fecha_venta": datetime.now()}}
+            )
+            return resultado.modified_count > 0
+        
+        def crear_usuario(self, nombre: str, email: str, password: str) -> Opcional[str]:
         """Crear un nuevo usuario"""
         try:
             resultado = self.usuarios.insert_one({
@@ -43,22 +83,12 @@ class GestorTareas:
                 "fecha_registro": datetime.now(),
                 "activo": True
             })
+            
             return str(resultado.inserted_id)
         except DuplicateKeyError:
             print(f"❌ Error: El email {email} ya está registrado")
             return None
-    
-    def obtener_usuario(self, usuario_id: str) -> Optional[Dict]:
-        """Obtener usuario por ID"""
-        try:
-            usuario = self.usuarios.find_one({"_id": ObjectId(usuario_id)})
-            if usuario:
-                usuario['_id'] = str(usuario['_id'])
-            return usuario
-        except Exception as e:
-            print(f"Error al obtener usuario: {e}")
-            return None
-        
+
     def crear_tarea(self, usuario_id: str, titulo: str, descripcion: str = "", 
                     fecha_limite: Optional[datetime] = None) -> Optional[str]:
         """Crear una nueva tarea para un usuario"""
@@ -80,7 +110,7 @@ class GestorTareas:
         resultado = self.tareas.insert_one(tarea)
         return str(resultado.inserted_id)
     
-    def obtener_tareas_usuario(self, usuario_id: str, estado: Optional[str] = None) -> List[Dict]:
+    def obtener_labiales_usuario(self, usuario_id: str, estado: Optional[str] = None) -> List[Dict]:
         """Obtener tareas de un usuario, opcionalmente filtradas por estado"""
         filtro = {"usuario_id": ObjectId(usuario_id)}
         if estado:
@@ -157,9 +187,7 @@ class GestorTareas:
         
         return estadisticas
     
-    def buscar_tareas(self, texto: str) -> List[Dict]:
-        """Buscar tareas por texto en título o descripción"""
-        # Requiere índice de texto en 'titulo' y 'descripcion'
+    def buscar_labiales(self, texto: str) -> List[Dict]:
         tareas = self.tareas.find({
             "$text": {"$search": texto}
         }).sort({"score": {"$meta": "textScore"}})
@@ -171,16 +199,11 @@ class GestorTareas:
             resultado.append(t)
         return resultado
     
-    def tareas_urgentes(self, horas: int = 24) -> List[Dict]:
-        """Encontrar tareas que vencen en las próximas N horas"""
-        ahora = datetime.now()
-        limite = ahora + timedelta(hours=horas)
         
         tareas = self.tareas.find({
             "estado": {"$ne": "completada"},
             "fecha_limite": {"$gte": ahora, "$lte": limite}
         }).sort("fecha_limite", 1)
-        
         resultado = []
         for t in tareas:
             t['_id'] = str(t['_id'])
@@ -197,51 +220,39 @@ class GestorTareas:
 # Ejemplo de uso
 def ejemplo_uso():
     # Inicializar gestor
-    gestor = GestorTareas()
+    gestor = GestorLabiales()
     
     # Crear usuario
-    usuario_id = gestor.crear_usuario("Karime Cruz", "karimearisbelcruzsilva2@email.com")
+    usuario_id = gestor.crear_usuario("Karime Cruz", "karimearisbelcruzsilva2@email.com", "1234")
     print(f"Usuario creado con ID: {usuario_id}")
     
-    if usuario_id:
-        # Crear tareas
-        tarea1 = gestor.crear_tarea(
-            usuario_id, 
-            "Aprender MongoDB", 
-            "Completar tutorial de PyMongo",
-            datetime.now() + timedelta(days=3)
-        )
-        print(f"Tarea creada: {tarea1}")
+    if usuario id:
+        laibal_id =gestor.agregar_labial(usuario_id, "Labial Rojo", "Rojo intenso", 15.99)
+        print(f"Labial agregado con ID: {labial_id}")
         
-        tarea2 = gestor.crear_tarea(
-            usuario_id,
-            "Hacer ejercicio",
-            "Ir al gimnasio 3 veces esta semana"
-        )
+        lista_Laviales = gestor.obteber_labiales_usuario(usuario_id)
+        print(f"Labiales de {usuario_id}:")
+        for l in lista_Laviales:
+            print(f" - {l['nombre']} ({l['color']}) - ${l['precio']}" stock: {l['stock']}")
         
-        # Agregar etiqueta
-        gestor.agregar_etiqueta(tarea1, "programación")
-        gestor.agregar_etiqueta(tarea1, "estudio")
-        
-        # Listar tareas
-        tareas = gestor.obtener_tareas_usuario(usuario_id)
-        print(f"\nTareas de {usuario_id}:")
-        for t in tareas:
-            print(f"  - {t['titulo']} [{t['estado']}]")
-        
-        # Actualizar estado
-        gestor.actualizar_estado_tarea(tarea1, "en_progreso")
-        
-        # Estadísticas
-        stats = gestor.estadisticas_usuario(usuario_id)
-        print(f"\nEstadísticas: {stats}")
-        
-        # Tareas urgentes
-        urgentes = gestor.tareas_urgentes(72)
-        print(f"\nTareas urgentes próximos 3 días: {len(urgentes)}")
+        # Tareas urgentes vender
+        vendido = gestor.vender_labial(labial_id, cantidad=2)
+        print(f"Venta realzada: {vendido}")
     
     # Cerrar conexión
     gestor.cerrar_conexion()
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+if request.method == 'POST':
+        email = request.form.get('email')
+if not email:
+            flash('Por favor, introduce un correo válido.')
+else:
+# Aquí iría la lógica para enviar el correo
+print(f"Enviando enlace de recuperación a: {email}")
+return "¡Correo enviado con éxito!"
+return render_template('forgot_password.html', title='Recuperar 
+Contraseña')
 
 if __name__ == "__main__":
     ejemplo_uso()
