@@ -233,7 +233,7 @@ def ejemplo_uso():
         lista_Laviales = gestor.obteber_labiales_usuario(usuario_id)
         print(f"Labiales de {usuario_id}:")
         for l in lista_Laviales:
-            print(f" - {l['nombre']} ({l['color']}) - ${l['precio']}" stock: {l['stock']}")
+            print(f" - {l['nombre']} ({l['color']}) - ${l['precio']} stock: {l['stock']}" )
         
         # Tareas urgentes vender
         vendido = gestor.vender_labial(labial_id, cantidad=2)
