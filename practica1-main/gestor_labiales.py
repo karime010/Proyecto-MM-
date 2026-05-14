@@ -4,6 +4,8 @@ from bson.objectid import ObjectId
 from datetime import datetime, timedelta
 from typing import Optional, List, Dict
 
+from self import self
+
 class GestorLabiales:
     def __init__(self, uri: str = 'mongodb+srv://karimeDB:cruzsilvaari091217@clusterkarimecruz.eb4k36a.mongodb.net/?appName=ClusterKarimeCruz'):
         try:
@@ -26,7 +28,7 @@ class GestorLabiales:
         self.tareas.create_index("usuario_id")
         self.tareas.create_index("color")
         
-    def agrgar_labial(self, usuario_id: str, nombre: str, color: str, precio: float) -> Optional[str]:
+    def agregar_labial(self, usuario_id: str, nombre: str, color: str, precio: float) -> Optional[str]:
         """Agregar un nuevo labial para un usuario"""
         if not self.obtener_usuario(usuario_id):
             print(f"❌ Error: Usuario {usuario_id} no existe")
@@ -40,40 +42,38 @@ class GestorLabiales:
             "stock": 10,
             "fecha_registro": datetime.now(),
             "vendido": False
-        }
-        
+                }
         resultado = self.labiales.insert_one(labial)
         return str(resultado.inserted_id)
     
     def obtener_labiales_usuario(self, usuario_id: str) -> list[Dict]:
         """Obtener labiales por ID"""
-            labiales = self.labiales.find({"_id": ObjectId(usuario_id)})
-            resultado = []
-            for labiales in labiales:
-                labiales['_id'] = str(labiales['_id'])
-                labiales['_id'] = str(labiales['usuario_id'])
-                resultado.append(labiales)
-            return resultado
-        
+        labiales = self.labiales.find({"_id": ObjectId(usuario_id)})
+        resultado = []
+        for labiales in labiales:
+            labiales['_id'] = str(labiales['_id'])
+            labiales['usuario_id'] = str(labiales['usuario_id'])
+            resultado.append(labiales)
+            return resultado 
         except Exception as e:
-            print(f"Error al obtener labiales: {e}")
-            return None
+        print(f"Error al obtener labiales: {e}")
+        return None
         
-        def vender_labial(self, labial_id: str, cantidad: init = 1) -> bool:
-            resultado = self.labiales.update_one(
+    def vender_labial(self, labial_id: str, cantidad: int = 1) -> bool:
+        resultado = self.labiales.update_one(
             {"_id": ObjectId(labial_id)},
             {"$inc": {"stock": -cantidad}, "$set": {"vendido": True, "fecha_venta": datetime.now()}}
         )
         return resultado.modified_count > 0
     
-        def marcar_como_vendido(self, labial_id: str) -> bool:
+    def marcar_como_vendido(self, labial_id: str) -> bool:
             resultado = self.labiales.update_one(
                 {"_id": ObjectId(labial_id)},
                 {"$set": {"vendido": True, "fecha_venta": datetime.now()}}
             )
             return resultado.modified_count > 0
         
-        def crear_usuario(self, nombre: str, email: str, password: str) -> Opcional[str]:
+    def crear_usuario(self, nombre: str, email: str, password: str) -> Optional[str]:
         """Crear un nuevo usuario"""
         try:
             resultado = self.usuarios.insert_one({
@@ -197,21 +197,18 @@ class GestorLabiales:
             t['_id'] = str(t['_id'])
             t['usuario_id'] = str(t['usuario_id'])
             resultado.append(t)
-        return resultado
-    
-        
+            return resultado
         tareas = self.tareas.find({
-            "estado": {"$ne": "completada"},
-            "fecha_limite": {"$gte": ahora, "$lte": limite}
-        }).sort("fecha_limite", 1)
+        "estado": {"$ne": "completada"},
+        "fecha_limite": {"$gte": "ahora", "$lte": "limite"}}).sort("fecha_limite", 1)
         resultado = []
         for t in tareas:
             t['_id'] = str(t['_id'])
             t['usuario_id'] = str(t['usuario_id'])
             resultado.append(t)
         return resultado
-    
-    def cerrar_conexion(self):
+
+def cerrar_conexion(self):
         """Cerrar conexión a MongoDB"""
         if self.cliente:
             self.cliente.close()
@@ -226,7 +223,7 @@ def ejemplo_uso():
     usuario_id = gestor.crear_usuario("Karime Cruz", "karimearisbelcruzsilva2@email.com", "1234")
     print(f"Usuario creado con ID: {usuario_id}")
     
-    if usuario id:
+    if usuario_id:
         laibal_id =gestor.agregar_labial(usuario_id, "Labial Rojo", "Rojo intenso", 15.99)
         print(f"Labial agregado con ID: {labial_id}")
         
@@ -241,19 +238,11 @@ def ejemplo_uso():
     
     # Cerrar conexión
     gestor.cerrar_conexion()
-@app.route('/forgot-password', methods=['GET', 'POST'])
-def forgot_password():
-if request.method == 'POST':
-        email = request.form.get('email')
-if not email:
-            flash('Por favor, introduce un correo válido.')
-else:
-# Aquí iría la lógica para enviar el correo
-print(f"Enviando enlace de recuperación a: {email}")
-return "¡Correo enviado con éxito!"
-return render_template('forgot_password.html', title='Recuperar 
-Contraseña')
+
 
 if __name__ == "__main__":
     ejemplo_uso()
 
+
+if __name__ == "__main__":
+    main()
