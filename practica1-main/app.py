@@ -32,7 +32,7 @@ def registro():
         if password != confirm_password:
             return render_template("registro.html", error="Las contraseñas no coinciden!")
 
-        gestor.crear_usuario_con_password(nombre, email, password)
+        gestor.crear_usuario(nombre, email, password)
         return redirect(url_for("login"))
 
     return render_template("registro.html")
@@ -68,7 +68,7 @@ def cerrarsesion():
     return redirect(url_for("login"))
 
 
-@app.route('/password', methods=['GET', 'POST'])
+@app.route('/paswoord', methods=['GET', 'POST'])
 def password():
 
     if request.method == 'POST':
@@ -112,7 +112,7 @@ Da clic en el siguiente enlace para cambiar tu contraseña:
         else:
             flash("Ese correo no está registrado")
 
-    return render_template('password.html')
+    return render_template('paswoord.html')
 
 
 @app.route('/nueva_password/<email>', methods=['GET', 'POST'])
