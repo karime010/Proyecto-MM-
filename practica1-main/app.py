@@ -92,7 +92,7 @@ Da clic en el siguiente enlace para cambiar tu contraseña:
 """)
 
             mensaje['Subject'] = 'Recuperar contraseña'
-            mensaje['From'] = 'tucorreo@gmail.com'
+            mensaje['From'] = '24308060610633@cetis61.edu.mx'
             mensaje['To'] = email
 
             # Enviar correo
@@ -100,8 +100,8 @@ Da clic en el siguiente enlace para cambiar tu contraseña:
             servidor.starttls()
 
             servidor.login(
-                'tucorreo@gmail.com',
-                'TU_CONTRASEÑA_DE_APLICACION'
+                '24308060610633@cetis61.edu.mx',
+                'vpok lnpo ouwu qyuh'
             )
 
             servidor.send_message(mensaje)
