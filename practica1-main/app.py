@@ -1,11 +1,13 @@
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import Flask, flash, redirect, render_template, request,flash, session, url_for
+import smtplib
+from email.mime.text import MIMEText
 
-from gestor_tareas import GestorTareas, _UsuariosProxy
+from gestor_labiales import GestorLabiales, GestorTareas, _UsuariosProxy
 
 app = Flask(__name__)
 app.secret_key = "mimecita2.0"  # La puse para proteger la sesión
 
-gestor = GestorTareas()
+gestor = GestorLabiales()
 
 # Asegura que exista gestor.usuarios.find_one aunque Mongo falle
 if getattr(gestor, "usuarios", None) is None:
@@ -18,17 +20,6 @@ def index():
         return redirect(url_for("dashboard"))
     return render_template("registro.html")
 
-
-@app.route("/dashboard")
-def dashboard():
-    if not session.get("usuario_id"):
-        return redirect(url_for("login"))
-
-    return (
-        "<h1>Bienvenido</h1>"
-        f"<p>Usuario ID: {session.get('usuario_id')}</p>"
-        f"<a href='{url_for('cerrarsesion')}'>Cerrar sesión</a>"
-    )
 
 
 @app.route("/registrar", methods=["GET", "POST"])
@@ -78,6 +69,72 @@ def cerrarsesion():
     return redirect(url_for("login"))
 
 
+@app.route('/password', methods=['GET', 'POST'])
+def password():
+
+    if request.method == 'POST':
+
+        email = request.form['email']
+
+        usuario = gestor.usuarios.find_one({"email": email})
+
+        if usuario:
+
+            # Link para cambiar contraseña
+            link = url_for('nueva_password', email=email, _external=True)
+
+            # Mensaje del correo
+            mensaje = MIMEText(f"""
+Hola.
+
+Da clic en el siguiente enlace para cambiar tu contraseña:
+
+{link}
+""")
+
+            mensaje['Subject'] = 'Recuperar contraseña'
+            mensaje['From'] = 'tucorreo@gmail.com'
+            mensaje['To'] = email
+
+            # Enviar correo
+            servidor = smtplib.SMTP('smtp.gmail.com', 587)
+            servidor.starttls()
+
+            servidor.login(
+                'tucorreo@gmail.com',
+                'TU_CONTRASEÑA_DE_APLICACION'
+            )
+
+            servidor.send_message(mensaje)
+            servidor.quit()
+
+            flash("Se envió un correo para recuperar tu contraseña")
+
+        else:
+            flash("Ese correo no está registrado")
+
+    return render_template('password.html')
+
+
+@app.route('/nueva_password/<email>', methods=['GET', 'POST'])
+def nueva_password(email):
+
+    if request.method == 'POST':
+
+        nueva = request.form['password']
+
+        gestor.usuarios.update_one(
+            {"email": email},
+            {"$set": {"password": nueva}}
+        )
+
+        flash("Contraseña actualizada")
+        return redirect(url_for('login'))
+
+    return render_template('nueva_password.html')
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
-
