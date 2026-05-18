@@ -2,7 +2,7 @@ from flask import Flask, flash, redirect, render_template, request,flash, sessio
 import smtplib
 from email.mime.text import MIMEText
 
-from gestor_labiales import GestorLabiales, GestorTareas, _UsuariosProxy
+from gestor_labiales import GestorLabiales, GestorLabiales, _UsuariosProxy
 
 app = Flask(__name__)
 app.secret_key = "mimecita2.0"  # La puse para proteger la sesión

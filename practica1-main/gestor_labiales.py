@@ -12,7 +12,7 @@ def main():
 
 class GestorLabiales:
 
-    def __init__(self, uri: str = 'mongodb+srv://karimeDB:<db_password>@clusterkarimecruz.eb4k36a.mongodb.net/?appName=ClusterKarimeCruz'):
+    def __init__(self, uri: str = 'mongodb+srv://karimeDB:cruzsilvaari091217@clusterkarimecruz.eb4k36a.mongodb.net/?appName=ClusterKarimeCruz'):
 
         try:
             self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000)
