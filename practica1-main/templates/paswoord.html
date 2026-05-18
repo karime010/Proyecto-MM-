@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 {% block contenido %}
 
-<div class="container mt-5">
+<div class="container mt-5"style="background-color:  #4d82e4">
     <div class="main-container">
 
-        <form id="forgot-password-form" method="POST" class="form">
+        <form id="forgot-password-form" method="POST" class="form" style="background-color:  #6998f0">
 
             <h1>Recuperar Contraseña</h1>
             <hr>
 
-            <!-- Mensajes -->
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}
@@ -19,6 +18,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
+
 
             <div class="form-group">
                 <label>Introduce el correo asociado a tu cuenta</label>
@@ -43,5 +43,6 @@
 
     </div>
 </div>
+
 
 {% endblock %}
