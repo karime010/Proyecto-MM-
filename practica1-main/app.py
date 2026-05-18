@@ -2,7 +2,7 @@ from flask import Flask, flash, redirect, render_template, request,flash, sessio
 import smtplib
 from email.mime.text import MIMEText
 
-from gestor_labiales import GestorLabiales, GestorLabiales, _UsuariosProxy
+from gestor_labiales import GestorLabiales
 
 app = Flask(__name__)
 app.secret_key = "mimecita2.0"  # La puse para proteger la sesión
@@ -10,8 +10,7 @@ app.secret_key = "mimecita2.0"  # La puse para proteger la sesión
 gestor = GestorLabiales()
 
 # Asegura que exista gestor.usuarios.find_one aunque Mongo falle
-if getattr(gestor, "usuarios", None) is None:
-    gestor.usuarios = _UsuariosProxy(gestor)
+
 
 
 @app.route("/")
