@@ -43,16 +43,16 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        usuario = gestor.usuarios.find_one({"email": email})
+        usuarios = gestor.usuarios.find_one({"email": email})
 
-        if not usuario:
+        if not usuarios:
             return render_template("login.html", error="Usuario no encontrado")
 
-        if "password" not in usuario:
+        if "password" not in usuarios:
             return render_template("login.html", error="Usuario no tiene contraseña")
 
-        if usuario["password"] == password:
-            session["usuario_id"] = str(usuario["_id"])
+        if usuarios["password"] == password:
+            session["usuarios_id"] = str(usuarios["_id"])
             return redirect(url_for("dashboard"))
 
         return render_template("login.html", error="Contraseña incorrecta")
@@ -83,9 +83,9 @@ def password():
 
             # Mensaje del correo
             mensaje = MIMEText(f"""
-Hola.
+Holish.
 
-Da clic en el siguiente enlace para cambiar tu contraseña:
+Da clic en el siguiente enlace para cambiar tu contraseña!!:
 
 {link}
 """)
