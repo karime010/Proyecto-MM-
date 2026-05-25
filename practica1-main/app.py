@@ -53,7 +53,7 @@ def login():
 
         if usuarios["password"] == password:
             session["usuarios_id"] = str(usuarios["_id"])
-            return redirect(url_for("password"))
+            return redirect(url_for("labiales"))
 
         return render_template("login.html", error="Contraseña incorrecta")
 
@@ -132,6 +132,9 @@ def nueva_password(email):
     return render_template('nueva_password.html')
 
 
+@app.route("/labiales")
+def lab():
+    return render_template("labiales.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
