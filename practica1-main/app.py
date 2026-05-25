@@ -43,7 +43,7 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        usuarios = gestor.usuarios.find_one({"email": email})
+        usuarios = gestor.Usuarios.find_one({"email": email})
 
         if not usuarios:
             return render_template("login.html", error="Usuario no encontrado")
@@ -53,7 +53,7 @@ def login():
 
         if usuarios["password"] == password:
             session["usuarios_id"] = str(usuarios["_id"])
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("password"))
 
         return render_template("login.html", error="Contraseña incorrecta")
 
@@ -130,7 +130,6 @@ def nueva_password(email):
         return redirect(url_for('login'))
 
     return render_template('nueva_password.html')
-
 
 
 
