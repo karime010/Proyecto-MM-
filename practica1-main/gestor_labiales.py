@@ -78,7 +78,9 @@ class GestorLabiales:
     def agregar_labial(self, usuario_id: str,
                         nombre: str,
                         color: str,
-                        precio: float) -> Optional[str]:
+                        precio: float,
+                        imagen: str) -> Optional[str]:
+        
 
         if not self.obtener_usuario(usuario_id):
 
@@ -91,11 +93,11 @@ class GestorLabiales:
             "nombre": nombre,
             "color": color,
             "precio": precio,
-            "imagen": "imagen.labial.jpg",
+            "imagen": imagen,
             "stock": 10,
             "vendido": False,
             "fecha_registro": datetime.now()
-        }
+        }  
 
         resultado = self.labiales.insert_one(labial)
 
