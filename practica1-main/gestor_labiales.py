@@ -20,8 +20,8 @@ class GestorLabiales:
 
             self.db = self.cliente['gestor_labiales']
 
-            self.Labiales = self.db['Labiales']
-            self.Usuarios = self.db['Usuarios']
+            self.labiales = self.db['labiales']
+            self.usuarios = self.db['usuarios']
 
             # Crear índices necesarios
             self._crear_indices()
@@ -34,15 +34,15 @@ class GestorLabiales:
 
     def _crear_indices(self):
 
-        self.Usuarios.create_index("email", unique=True)
-        self.Labiales.create_index([("usuario_id", 1), ("fecha_registro", -1)])
-        self.Labiales.create_index("color")
+        self.usuarios.create_index("email", unique=True)
+        self.labiales.create_index([("usuario_id", 1), ("fecha_registro", -1)])
+        self.labiales.create_index("color")
 
     def crear_usuario(self, nombre: str, email: str, password: str) -> Optional[str]:
 
         try:
 
-            resultado = self.Usuarios.insert_one({
+            resultado = self.usuarios.insert_one({
                 "nombre": nombre,
                 "email": email,
                 "password": password,
@@ -105,13 +105,13 @@ class GestorLabiales:
 
         filtro = {"usuario_id": ObjectId(usuario_id)}
 
-        self.Labiales = self.Labiales.find(filtro).sort(
+        labiales = self.labiales.find(filtro).sort(
             "fecha_registro", -1
         )
 
         resultado = []
 
-        for l in self.Labiales:
+        for l in labiales:
 
             l['_id'] = str(l['_id'])
             l['usuario_id'] = str(l['usuario_id'])

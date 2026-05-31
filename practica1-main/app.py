@@ -15,7 +15,7 @@ gestor = GestorLabiales()
 @app.route("/")
 def index():
     if session.get("usuario_id"):
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("labiales"))
     return render_template("registro.html")
 
 
@@ -43,7 +43,7 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        usuarios = gestor.Usuarios.find_one({"email": email})
+        usuarios = gestor.usuarios.find_one({"email": email})
 
         if not usuarios:
             return render_template("login.html", error="Usuario no encontrado")
@@ -52,7 +52,7 @@ def login():
             return render_template("login.html", error="Usuario no tiene contraseña")
 
         if usuarios["password"] == password:
-            session["usuarios_id"] = str(usuarios["_id"])
+            session["usuario_id"] = str(usuarios["_id"])
             return redirect(url_for("labiales"))
 
         return render_template("login.html", error="Contraseña incorrecta")
@@ -132,9 +132,12 @@ def nueva_password(email):
     return render_template('nueva_password.html')
 
 
+
 @app.route("/labiales")
-def lab():
-    return render_template("labiales.html")
+def labiales():
+    labiales = list(gestor.labiales.find())
+    print("LABIALES:", labiales)
+    return render_template("labiales.html", labiales=labiales)
 
 if __name__ == "__main__":
     app.run(debug=True)
