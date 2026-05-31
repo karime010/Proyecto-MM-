@@ -91,6 +91,7 @@ class GestorLabiales:
             "nombre": nombre,
             "color": color,
             "precio": precio,
+            "imagen": "imagen.labial.jpg",
             "stock": 10,
             "vendido": False,
             "fecha_registro": datetime.now()

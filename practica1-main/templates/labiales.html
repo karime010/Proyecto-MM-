@@ -8,7 +8,7 @@
         {% for labial in labiales %}
 
         <div class="card" style="width: 18rem;">
-            <img src="{{ labial.imagen }}" class="card-img-top">
+            <img src="{{ url_for('static', filename=labial.imagen) }}" class="card-img-top">
 
             <div class="card-body">
                 <h5>{{ labial.nombre }}</h5>
