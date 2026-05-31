@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Agregar Labial </h2>
+
+    <form action="{{ url_for('agregar_labiales') }}" method="POST" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <label>Nombre</label>
+            <input type="text" name="nombre" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Marca</label>
+            <input type="text" name="marca" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Precio</label>
+            <input type="number" name="precio" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Imagen</label>
+            <input type="file" name="imagen" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary"> Guardar</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

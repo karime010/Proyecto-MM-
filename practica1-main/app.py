@@ -67,6 +67,7 @@ def cerrarsesion():
     return redirect(url_for("login"))
 
 
+
 @app.route('/paswoord', methods=['GET', 'POST'])
 def password():
 
@@ -138,6 +139,25 @@ def labiales():
     labiales = list(gestor.labiales.find())
     print("LABIALES:", labiales)
     return render_template("labiales.html", labiales=labiales)
+
+@app.route("/agregar_labiales", methods=["GET", "POST"])
+def agregar_labiales():
+    if request.method == "POST":
+        usuario_id = session.get("usuario_id")
+        nombre = request.form["nombre"]
+        marca = request.form["marca"]
+        precio = float(request.form["precio"])
+
+        imagen = request.files["imagen"] 
+        nombre_archivo = imagen.filename
+
+        imagen.save(f"practica1-main/static/{nombre_archivo}")
+
+        gestor.agregar_labial(usuario_id,nombre, marca, precio, imagen=f"static/{nombre_archivo}")
+
+        return redirect(url_for("Contactos"))
+    
+    return render_template("agregar_labiales.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

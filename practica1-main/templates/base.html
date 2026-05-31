@@ -16,6 +16,22 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto gap-2">
+                    <li class="nav-item dropdown">
+
+                        {% if session.get("usuario_id") %}
+
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Menu
+                        </a>
+                    
+          
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/agregar_labiales">Agregar Labial</a></li>
+                            <li><a class="dropdown-item" href="/Contactos">Contactos</a></li>
+                        </ul>
+                        {% endif %}
+                       </li>
+        
                     {% if session.get("usuario_id") %}
                     <li class="nav-item"> 
                         <a class="nav-link active" href="{{ url_for('cerrarsesion') }}" style="color: white;">Cerrar sesión</a>
