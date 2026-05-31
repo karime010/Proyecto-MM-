@@ -159,5 +159,26 @@ def agregar_labiales():
     
     return render_template("agregar_labiales.html")
 
+@app.route("/editar_labial/<id>", methods=["GET", "POST"])
+def editar_labial(id):
+
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        marca = request.form["marca"]
+        precio = float(request.form["precio"])
+
+        imagen = request.files["imagen"]
+
+        nombre_archivo = imagen.filename
+        imagen.save(f"practica1-main/static/{nombre_archivo}")
+
+        ruta = f"/static/{nombre_archivo}"
+
+        gestor.actualizar_labial(id, nombre, marca, precio, ruta)
+
+        return redirect(url_for("Contactos"))
+
+    return render_template("editar.html", id=id)
+
 if __name__ == "__main__":
     app.run(debug=True)

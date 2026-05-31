@@ -151,6 +151,19 @@ class GestorLabiales:
 
         return resultado.deleted_count > 0
 
+    def actualizar_labial(self, labial_id: str, nombre: str, color: str, precio: float, imagen: str) -> bool:
+        resultado = self.labiales.update_one(
+        {"_id": ObjectId(labial_id)},
+        {
+            "$set": {
+                "nombre": nombre,
+                "color": color,
+                "precio": precio,
+                "imagen": imagen
+            }
+        }
+    )
+        return resultado.modified_count > 0
     def buscar_labiales(self, texto: str) -> List[Dict]:
 
         labiales = self.labiales.find({
