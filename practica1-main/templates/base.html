@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color:  #6998f0">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color:  #e9b8d9">
         <div class="container-fluid">
             <a class="navbar-brand fw-bold" href="#" style="color:black">MM'S</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -24,13 +24,12 @@
                         Menu
                         </a>
                     
-          
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/agregar_labiales">Agregar Labial</a></li>
                             <li><a class="dropdown-item" href="/Contactos">Contactos</a></li>
                         </ul>
                         {% endif %}
-                       </li>
+                    </li>
         
                     {% if session.get("usuario_id") %}
                     <li class="nav-item"> 
@@ -47,12 +46,10 @@
         {% endblock %}
     </section> 
 </header>
-<footer style="background-color: #000000; text-align: center;">
-    <div class="container py-3">
-        <p style="color: darkgrey;">© 2026 MM'S — Todos los derechos reservados</p>
-        <p>Hecho por Karime Cruz</p>
-    </div>
-    </footer>
+<footer style="background-color: #e9b8d9; text-align: center;">
+    <p style="color: darkgrey;">© 2026 MM'S — Todos los derechos reservados</p>
+    <p>Hecho por Karime Cruz</p>
+</footer>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </html>

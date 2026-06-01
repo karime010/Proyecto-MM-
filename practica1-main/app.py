@@ -15,7 +15,7 @@ gestor = GestorLabiales()
 @app.route("/")
 def index():
     if session.get("usuario_id"):
-        return redirect(url_for("labiales"))
+        return redirect(url_for("login"))
     return render_template("registro.html")
 
 
