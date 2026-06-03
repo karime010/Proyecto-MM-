@@ -155,7 +155,7 @@ def agregar_labiales():
 
         gestor.agregar_labial(usuario_id,nombre, marca, precio, imagen=f"static/{nombre_archivo}")
 
-        return redirect(url_for("Contactos"))
+        return redirect(url_for("labiales"))
     
     return render_template("agregar_labiales.html")
 
