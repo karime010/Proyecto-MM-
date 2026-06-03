@@ -176,9 +176,15 @@ def editar_labial(id):
 
         gestor.actualizar_labial(id, nombre, marca, precio, ruta)
 
-        return redirect(url_for("Contactos"))
+        return redirect(url_for("labiales"))
 
     return render_template("editar.html", id=id)
+
+
+@app.route("/eliminar_labial/<id>")
+def eliminar_labial(id):
+    gestor.eliminar_labial(id)
+    return redirect(url_for("labiales"))
 
 if __name__ == "__main__":
     app.run(debug=True)
