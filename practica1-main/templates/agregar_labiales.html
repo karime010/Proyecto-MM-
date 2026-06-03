@@ -3,10 +3,11 @@
 
 <div class="container mt-4">
 
-    <h2 class="mb-4">Agregar Labial </h2>
 
     <form action="{{ url_for('agregar_labiales') }}" method="POST" enctype="multipart/form-data">
-
+<div class="card shadow p-4" style="width: 400px;">
+    <div class="text-center" >
+        <h2 class="mb-4" ><strong>Agregar Labial</strong></h2>
         <div class="mb-3">
             <label>Nombre</label>
             <input type="text" name="nombre" class="form-control" required>
@@ -24,7 +25,7 @@
             <input type="file" name="imagen" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-primary"> Guardar</button>
-
+</div>
     </form>
 
 </div>

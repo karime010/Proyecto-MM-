@@ -53,6 +53,7 @@ def login():
 
         if usuarios["password"] == password:
             session["usuario_id"] = str(usuarios["_id"])
+            session["nombre"] = usuarios ["nombre"]
             return redirect(url_for("labiales"))
 
         return render_template("login.html", error="Contraseña incorrecta")
