@@ -20,7 +20,7 @@ def index():
 
 
 
-@app.route("/registrar", methods=["GET", "POST"])
+@app.route("/registro", methods=["GET", "POST"])
 def registro():
     if request.method == "POST":
         nombre = request.form["nombre"]
@@ -53,7 +53,6 @@ def login():
 
         if usuarios["password"] == password:
             session["usuario_id"] = str(usuarios["_id"])
-            session["nombre"] = usuarios ["nombre"]
             return redirect(url_for("labiales"))
 
         return render_template("login.html", error="Contraseña incorrecta")
