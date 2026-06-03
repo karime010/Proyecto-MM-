@@ -8,7 +8,7 @@
         {% for labial in labiales %}
 
         <div class="card" style="width: 18rem;">
-            <img src="{{ url_for('static', filename=labial.imagen) }}" class="card-img-top">
+            <img src="{{labial.imagen }}" class="card-img-top">
 
             <div class="card-body">
                 <h5>{{ labial.nombre }}</h5>
@@ -17,7 +17,7 @@
             </div>
             <a href="/eliminar_labial/{{ labial._id }}" class="btn btn-danger btn-sm"
                 onclick="return confirm('¿Estás seguro de que quieres eliminar este labial?');">
-                Eliminar
+                Eliminar 
             </a>
             <div>
             <a href="/editar_labial/{{ labial._id }}" class="btn btn-danger btn-sm">Editar</a>
