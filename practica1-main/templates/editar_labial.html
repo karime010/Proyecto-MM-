@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+
+<div class="container mt-4">
+    <div class="card" style="width: 18rem;">
+            <h2>Editar Labial</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Color</label>
+            <input type="text" name="marca" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Precio</label>
+            <input type="number" step="0.01" name="precio" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nueva imagen</label>
+            <input type="file" name="imagen" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Guardar cambios
+        </button>
+
+        <a href="{{ url_for('Contactos') }}" class="btn btn-secondary">
+            Cancelar
+        </a>
+
+    </form>
+
+    </div>
+
+
+{% endblock %} 
