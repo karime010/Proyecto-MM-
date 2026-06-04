@@ -186,5 +186,15 @@ def eliminar_labial(id):
     gestor.eliminar_labial(id)
     return redirect(url_for("labiales"))
 
+
+@app.route("/contactos")
+def contactos():
+    return render_template("contactos.html")
+
+
+@app.route("/labialesyaechos")
+def labialesyaechos():
+    return render_template("labialesyaechos.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
