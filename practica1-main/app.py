@@ -29,10 +29,9 @@ def enviar_correo_recuperacion(destinatario, enlace):
     except Exception as e:
         print("Error enviando correo:", e)
 
-gestor = GestorLabiales
 
 
-
+gestor = GestorLabiales()
 
 @app.route("/")
 def index():
@@ -119,7 +118,7 @@ def recuperar():
         enviar_correo_recuperacion(email, enlace)
 
         flash("Revisa tu correo")
-        return redirect("/login")
+        return redirect("/recuperar")
 
     return render_template("recuperar.html")
 
@@ -163,7 +162,7 @@ def nueva_password(token):
         )
 
         flash("Contraseña actualizada. Ya puedes iniciar sesión")
-        return redirect("/")
+        return redirect("/recuperar")
 
     return render_template("nueva_contraseña.html")
 
