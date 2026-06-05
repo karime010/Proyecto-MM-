@@ -1,3 +1,4 @@
+import bcrypt
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError, ConnectionFailure
 from bson.objectid import ObjectId
@@ -41,11 +42,15 @@ class GestorLabiales:
     def crear_usuario(self, nombre: str, email: str, password: str) -> Optional[str]:
 
         try:
-
+            password_hash = bcrypt.hashpw(
+                password.encode("utf-8"),
+                bcrypt.gensalt()
+            ).decode("utf-8")
+        
             resultado = self.usuarios.insert_one({
                 "nombre": nombre,
                 "email": email,
-                "password": password,
+                "password": password_hash,
                 "fecha_registro": datetime.now(),
                 "activo": True
             })
