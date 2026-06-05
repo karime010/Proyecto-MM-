@@ -13,7 +13,7 @@ serializer = URLSafeTimedSerializer(app.secret_key)
 def enviar_correo_recuperacion(destinatario, enlace):
     msg = EmailMessage()
     msg["Subject"] = "Recuperar contraseña"
-    msg["From"] = "TU_CORREO@gmail.com"
+    msg["From"] = "24308060610633@cetis61.edu.mx"
     msg["To"] = destinatario
 
     msg.set_content(
@@ -23,8 +23,8 @@ def enviar_correo_recuperacion(destinatario, enlace):
     with smtplib.SMTP("smtp.gmail.com", 587) as servidor:
         servidor.starttls()
         servidor.login(
-            "TU_CORREO@gmail.com",
-            "TU_CONTRASEÑA_DE_APLICACION"
+            "24308060610633@cetis61.edu.mx",
+            "vpok Inpo ouwu ayuh"
         )
         servidor.send_message(msg)
 gestor = GestorLabiales()
