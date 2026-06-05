@@ -201,7 +201,7 @@ def ejemplo_uso():
     gestor = GestorLabiales()
 
     usuario_id = gestor.crear_usuario(
-        "Mitzy",
+        "mitzy",
         "24308060610657@cetis61.edu.mx",
         "1234"
     )
@@ -243,7 +243,8 @@ def ejemplo_uso():
 
     gestor.cerrar_conexion()
 
-
+if __name__ == "__main__":
+    ejemplo_uso()
 
 
 
