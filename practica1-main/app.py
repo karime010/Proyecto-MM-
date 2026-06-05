@@ -11,6 +11,9 @@ app.secret_key = "mimecita2.0"
 serializer = URLSafeTimedSerializer(app.secret_key)
 
 def enviar_correo_recuperacion(destinatario, enlace):
+
+    print("Enviando correo a:", destinatario)
+    print("Link:", enlace)
     try:
         msg = EmailMessage()
         msg["Subject"] = "Recuperar contraseña"
@@ -91,9 +94,10 @@ def cerrarsesion():
 
 
 
-@app.route("/recuperar", methods=["GET", "POST"])
+@app.route("/recuperar", methods=["POST", "GET"])
 def recuperar():
 
+    print("RUTA RECUPERAR EJECUTANDOSE")
     if request.method == "POST":
 
         email = request.form.get("email", "").strip().lower()
@@ -104,21 +108,18 @@ def recuperar():
             flash("Ese correo no está registrado")
             return render_template("recuperar.html")
 
-        token = serializer.dumps(
-            email,
-            salt="recuperar-password"
-        )
+        print("✔ USUARIO ENCONTRADO")
 
-        enlace = url_for(
-            "nueva_password",
-            token=token,
-            _external=True
-        )
+        token = serializer.dumps(email, salt="recuperar-password")
+
+        enlace = url_for("nueva_password", token=token, _external=True)
+
+        print("📩 ENVIANDO CORREO")
 
         enviar_correo_recuperacion(email, enlace)
 
         flash("Revisa tu correo")
-        return redirect("/recuperar")
+        return redirect("/login")
 
     return render_template("recuperar.html")
 
