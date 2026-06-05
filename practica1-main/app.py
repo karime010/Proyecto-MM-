@@ -11,23 +11,25 @@ app.secret_key = "mimecita2.0"
 serializer = URLSafeTimedSerializer(app.secret_key)
 
 def enviar_correo_recuperacion(destinatario, enlace):
-    msg = EmailMessage()
-    msg["Subject"] = "Recuperar contraseña"
-    msg["From"] = "24308060610633@cetis61.edu.mx"
-    msg["To"] = destinatario
+    try:
+        msg = EmailMessage()
+        msg["Subject"] = "Recuperar contraseña"
+        msg["From"] = "karimearisbelcruzsilva2@gmail.com"
+        msg["To"] = destinatario
 
-    msg.set_content(
-        f"Hola.\n\nPara cambiar tu contraseña entra al siguiente enlace:\n{enlace}"
-    )
+        msg.set_content(f"Link:\n{enlace}")
 
-    with smtplib.SMTP("smtp.gmail.com", 587) as servidor:
-        servidor.starttls()
-        servidor.login(
-            "24308060610633@cetis61.edu.mx",
-            "vpok Inpo ouwu ayuh"
-        )
-        servidor.send_message(msg)
-gestor = GestorLabiales()
+        with smtplib.SMTP("smtp.gmail.com", 587) as servidor:
+            servidor.starttls()
+            servidor.login("karimearisbelcruzsilva2@gmail.com", "cfhiwormgacgokuv")
+            servidor.send_message(msg)
+
+        print("Correo enviado")
+
+    except Exception as e:
+        print("Error enviando correo:", e)
+
+gestor = GestorLabiales
 
 
 
