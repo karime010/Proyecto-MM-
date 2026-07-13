@@ -179,15 +179,15 @@ def agregar_labiales():
     if request.method == "POST":
         usuario_id = session.get("usuario_id")
         nombre = request.form["nombre"]
-        marca = request.form["marca"]
+        descripcion = request.form["descripcion"]
+        color = request.form["color"]
         precio = float(request.form["precio"])
-
         imagen = request.files["imagen"] 
         nombre_archivo = imagen.filename
 
         imagen.save(f"practica1-main/static/{nombre_archivo}")
 
-        gestor.agregar_labial(usuario_id,nombre, marca, precio, imagen=f"static/{nombre_archivo}")
+        gestor.agregar_labial(usuario_id, nombre, descripcion, color, precio, imagen=f"static/{nombre_archivo}")
 
         return redirect(url_for("labiales"))
     
@@ -198,9 +198,9 @@ def editar_labial(id):
 
     if request.method == "POST":
         nombre = request.form["nombre"]
-        marca = request.form["marca"]
+        descripcion = request.form["descripcion"]
+        color = request.form["color"]
         precio = float(request.form["precio"])
-
         imagen = request.files["imagen"]
 
         nombre_archivo = imagen.filename
@@ -208,7 +208,7 @@ def editar_labial(id):
 
         ruta = f"/static/{nombre_archivo}"
 
-        gestor.actualizar_labial(id, nombre, marca, precio, ruta)
+        gestor.actualizar_labial(id, nombre, descripcion, color, precio, ruta)
 
         return redirect(url_for("labiales"))
 

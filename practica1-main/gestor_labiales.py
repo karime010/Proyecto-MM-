@@ -82,6 +82,7 @@ class GestorLabiales:
 
     def agregar_labial(self, usuario_id: str,
                         nombre: str,
+                        descripcion:str,
                         color: str,
                         precio: float,
                         imagen: str) -> Optional[str]:
@@ -96,6 +97,7 @@ class GestorLabiales:
 
             "usuario_id": ObjectId(usuario_id),
             "nombre": nombre,
+            "descripcion": descripcion,
             "color": color,
             "precio": precio,
             "imagen": imagen,
@@ -156,12 +158,13 @@ class GestorLabiales:
 
         return resultado.deleted_count > 0
 
-    def actualizar_labial(self, labial_id: str, nombre: str, color: str, precio: float, imagen: str) -> bool:
+    def actualizar_labial(self, labial_id: str, nombre: str, descripcion: str, color: str, precio: float, imagen: str) -> bool:
         resultado = self.labiales.update_one(
         {"_id": ObjectId(labial_id)},
         {
             "$set": {
                 "nombre": nombre,
+                "descripcion": descripcion,
                 "color": color,
                 "precio": precio,
                 "imagen": imagen
